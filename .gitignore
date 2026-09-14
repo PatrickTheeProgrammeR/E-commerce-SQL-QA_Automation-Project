@@ -1,0 +1,53 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+
+# Virtual environment
+.venv/
+venv/
+env/
+ENV/
+
+# PyCharm
+.idea/
+*.iml
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# Test / coverage
+.pytest_cache/
+.coverage
+htmlcov/
+coverage.xml
+
+# Reports
+reports/
+test-results/
+allure-results/
+allure-report/
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# SQL
+*.sqlite
+*.sqlite3
+*.db
+
+# Temporary files
+tmp/
+temp/
+
+# Secrets / credentials
+secrets/
+credentials/
