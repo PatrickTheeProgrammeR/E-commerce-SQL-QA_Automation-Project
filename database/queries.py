@@ -28,4 +28,37 @@ def get_product_by_name_orm(name):
         return product
 
 
+def create_product(name, price):
+    with Session(engine) as session:
+        product = Product(name=name, price=price)
+        session.add(product)
+        session.commit()
+        session.refresh(product)
+        return product
+
+
+def update_product_price(product_id, new_price):
+    with Session(engine) as session:
+        product = session.get(Product, product_id)
+
+        if product is None:
+            raise ValueError("Product not found")
+
+        product.price = new_price
+        session.commit()
+        session.refresh(product)
+
+        return product
+
+
+def delete_product(product_id):
+    with Session(engine) as session:
+        product = session.get(Product, product_id)
+
+        if product is None:
+            raise ValueError("Product not found")
+
+        session.delete(product)
+        session.commit()
+
 
