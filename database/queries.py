@@ -1,4 +1,8 @@
 import sqlite3
+from sqlalchemy import create_engine
+from sqlalchemy import select
+from sqlalchemy.orm import Session
+from database.models import Product
 
 
 def get_product_by_name(name):
@@ -14,6 +18,14 @@ def get_product_by_name(name):
         result = dict(row)
         return result
 
+
+engine = create_engine("sqlite:///ecommerce.db")
+
+def get_product_by_name_orm(name):
+    with Session(engine) as session:
+        stmt = select(Product).where(Product.name == name)
+        product = session.scalars(stmt).first()
+        return product
 
 
 
