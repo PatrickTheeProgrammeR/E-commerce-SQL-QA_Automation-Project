@@ -1,10 +1,12 @@
 import sqlite3
-import os
+from pathlib import Path
 
-if os.path.exists("ecommerce.db"):
-    os.remove("ecommerce.db")
+DATABASE = Path(__file__).resolve().parent / "ecommerce.db"
 
-with sqlite3.connect('ecommerce.db') as connection:
+if DATABASE.exists():
+    DATABASE.unlink()
+
+with sqlite3.connect(DATABASE) as connection:
     cursor = connection.cursor()
     cursor.execute("""
             CREATE TABLE IF NOT EXISTS users (

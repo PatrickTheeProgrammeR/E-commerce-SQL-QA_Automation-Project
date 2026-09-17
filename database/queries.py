@@ -1,12 +1,15 @@
 import sqlite3
+from pathlib import Path
 from sqlalchemy import create_engine
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 from database.models import Product
 
+DATABASE = Path(__file__).resolve().parent.parent / "data" / "ecommerce.db"
+
 
 def get_product_by_name(name):
-    with sqlite3.connect("ecommerce.db") as connection:
+    with sqlite3.connect(DATABASE) as connection:
         connection.row_factory = sqlite3.Row
         cursor = connection.cursor()
         cursor.execute("SELECT * FROM products WHERE name = ?", (name,))
@@ -19,7 +22,7 @@ def get_product_by_name(name):
         return result
 
 
-engine = create_engine("sqlite:///ecommerce.db")
+engine = create_engine(f"sqlite:///{DATABASE}")
 
 def get_product_by_name_orm(name):
     with Session(engine) as session:
@@ -60,5 +63,3 @@ def delete_product(product_id):
 
         session.delete(product)
         session.commit()
-
-
