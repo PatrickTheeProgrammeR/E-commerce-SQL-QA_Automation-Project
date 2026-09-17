@@ -1,9 +1,11 @@
 import requests
 import sqlite3
+from pathlib import Path
 
+DATABASE = Path(__file__).resolve().parent.parent / "data" / "ecommerce.db"
 
 def test_get_user():
-    with sqlite3.connect("ecommerce.db") as connection:
+    with sqlite3.connect(DATABASE) as connection:
         connection.row_factory = sqlite3.Row
         url = "http://localhost:8000/users/1"
         response = requests.get(url)
@@ -27,7 +29,7 @@ def test_get_user():
 
 
 def test_create_user():
-    with sqlite3.connect("ecommerce.db") as connection:
+    with sqlite3.connect(DATABASE) as connection:
         connection.row_factory = sqlite3.Row
         url = "http://localhost:8000/users"
         response = requests.post(
@@ -55,7 +57,7 @@ def test_create_user():
 
 
 def test_update_user():
-    with sqlite3.connect("ecommerce.db") as connection:
+    with sqlite3.connect(DATABASE) as connection:
         connection.row_factory = sqlite3.Row
         url = "http://localhost:8000/users/1"
         response = requests.put(
@@ -85,7 +87,7 @@ def test_update_user():
 
 
 def test_delete_user():
-    with sqlite3.connect("ecommerce.db") as connection:
+    with sqlite3.connect(DATABASE) as connection:
         url = "http://localhost:8000/users/1"
         response = requests.delete(
             url,
@@ -101,4 +103,22 @@ def test_delete_user():
 
         user = cursor.fetchone()
 
+        assert user is None
+
+
+
+def test_get_user_not_found():
+    with sqlite3.connect(DATABASE) as connection:
+        url = "http://localhost:8000/users/5"
+        response = requests.get(url)
+
+        assert response.status_code == 404
+
+        cursor = connection.cursor()
+        cursor.execute(
+            """SELECT * FROM users WHERE id = ?""",
+            (5,)
+        )
+
+        user = cursor.fetchone()
         assert user is None

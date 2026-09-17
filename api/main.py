@@ -1,11 +1,13 @@
 from fastapi import FastAPI, HTTPException
 import sqlite3
-
 app = FastAPI()
+from pathlib import Path
+
+DATABASE = Path(__file__).resolve().parent.parent / "data" / "ecommerce.db"
 
 @app.get("/users/{user_id}", status_code=200)
 def get_user(user_id : int):
-    with sqlite3.connect("ecommerce.db") as connection:
+    with sqlite3.connect(DATABASE) as connection:
         connection.row_factory = sqlite3.Row
         cursor = connection.cursor()
 
@@ -31,7 +33,7 @@ def get_user(user_id : int):
 
 @app.post("/users", status_code=201)
 def create_user(user: dict):
-    with sqlite3.connect("ecommerce.db") as connection:
+    with sqlite3.connect(DATABASE) as connection:
         connection.row_factory = sqlite3.Row
         cursor = connection.cursor()
 
@@ -53,7 +55,7 @@ def create_user(user: dict):
 
 @app.put("/users/{user_id}", status_code=200)
 def update_user(user_id : int, user : dict):
-    with sqlite3.connect("ecommerce.db") as connection:
+    with sqlite3.connect(DATABASE) as connection:
         connection.row_factory = sqlite3.Row
         cursor = connection.cursor()
 
@@ -70,6 +72,12 @@ def update_user(user_id : int, user : dict):
             )
         )
 
+        if cursor.rowcount == 0:
+            raise HTTPException(
+                status_code=404,
+                detail="User not found"
+            )
+
         connection.commit()
 
     return {
@@ -81,7 +89,7 @@ def update_user(user_id : int, user : dict):
 
 @app.delete("/users/{user_id}", status_code=200)
 def delete_user(user_id : int):
-    with sqlite3.connect("ecommerce.db") as connection:
+    with sqlite3.connect(DATABASE) as connection:
         cursor = connection.cursor()
 
         cursor.execute(
