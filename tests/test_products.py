@@ -1,5 +1,4 @@
 from itertools import product
-
 from database.models import Product
 from database.queries import get_product_by_name, get_product_by_name_orm, create_product, update_product_price, delete_product
 import pytest

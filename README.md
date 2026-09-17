@@ -14,6 +14,8 @@ Projekt pokazuje pracę z relacyjną bazą danych, zapytaniami SQL, integracją 
 * SQLite3
 * SQLAlchemy ORM
 * Pytest
+* FastAPI
+* Requests
 * REST API
 * Git
 * Jira
@@ -24,7 +26,8 @@ Projekt pokazuje pracę z relacyjną bazą danych, zapytaniami SQL, integracją 
 * Analiza danych e-commerce za pomocą SQL
 * Praca z SQLite przy użyciu Pythona
 * Wykorzystanie SQLAlchemy ORM do komunikacji z bazą danych
-* Tworzenie testów API przy użyciu Pytest
+* Tworzenie REST API z wykorzystaniem FastAPI
+* Tworzenie testów API przy użyciu Pytest i Requests
 * Weryfikowanie danych z API względem danych w bazie danych
 * Organizacja zadań i procesu testowego z wykorzystaniem Jira
 * Praktyczne wykorzystanie Git w procesie tworzenia projektu
@@ -82,11 +85,18 @@ Projekt wykorzystuje dwa sposoby komunikacji z SQLite:
 * wykorzystanie `Session`
 * obsługa transakcji
 
+## REST API
+
+Projekt zawiera własne REST API zbudowane w FastAPI, które komunikuje się bezpośrednio z bazą SQLite.
+
+Aktualnie rozwijane są endpointy dla danych użytkowników oraz testy ich działania.
+
 ## QA Automation
 
-Testy automatyczne z wykorzystaniem Pytest sprawdzają m.in.:
+Testy automatyczne z wykorzystaniem Pytest i Requests sprawdzają m.in.:
 
 * statusy odpowiedzi API
+* poprawność danych zwracanych przez API
 * poprawność utworzonych rekordów
 * poprawność aktualizacji rekordów
 * poprawność danych w bazie
@@ -151,6 +161,9 @@ TASK-5 Add database validation for user creation
 
 ```text
 E-commerce-SQL-QA_Automation-Project/
+│
+├── api/
+│   └── main.py
 │
 ├── database/
 │   ├── models.py
