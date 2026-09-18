@@ -20,6 +20,35 @@ Projekt pokazuje pracę z relacyjną bazą danych, zapytaniami SQL, integracją 
 * Git
 * Jira
 
+  ## Instalacja i uruchomienie
+
+* Sklonuj repozytorium i przejdź do katalogu projektu:
+
+   ```powershell
+   git clone <adres-repozytorium>
+   cd E-commerce_SQL_&_QA_Automation-Project
+
+* Utwórz i aktywuj środowisko wirtualne:
+
+  python -m venv .venv
+  .venv\Scripts\Activate.ps1
+
+* Zainstaluj wymagane biblioteki:
+
+pip install -r requirements.txt
+
+* Uruchom API:
+
+python -m uvicorn api.main:app --reload
+
+Po uruchomieniu dokumentacja API będzie dostępna pod adresem:
+
+http://127.0.0.1:8000/docs
+
+* Uruchom testy:
+
+pytest
+  
 ## Cele projektu
 
 * Praktyczne wykorzystanie zapytań SQL na relacyjnej bazie danych
