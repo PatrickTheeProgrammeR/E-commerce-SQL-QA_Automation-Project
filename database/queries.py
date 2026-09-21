@@ -4,6 +4,7 @@ from sqlalchemy import create_engine
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 from database.models import Product
+from database.models import Order, OrderItem
 
 DATABASE = Path(__file__).resolve().parent.parent / "data" / "ecommerce.db"
 
@@ -63,3 +64,36 @@ def delete_product(product_id):
 
         session.delete(product)
         session.commit()
+
+
+def get_order_by_id(order_id):
+    with Session(engine) as session:
+        order = session.get(Order, order_id)
+
+        if order is None:
+            raise ValueError("Order not found")
+
+        return order
+
+
+def create_order(user_id, total_amount):
+    with Session(engine) as session:
+        order = Order(user_id=user_id, total_amount=total_amount)
+
+        session.add(order)
+        session.commit()
+        session.refresh(order)
+
+        return order
+
+
+def add_order_item(order_id, product_id, quantity):
+    with Session(engine) as session:
+        order_item = OrderItem(order_id=order_id, product_id=product_id, quantity=quantity)
+
+        session.add(order_item)
+        session.commit()
+        session.refresh(order_item)
+
+        return order_item
+
