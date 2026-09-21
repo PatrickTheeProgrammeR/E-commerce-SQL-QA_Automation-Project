@@ -130,3 +130,23 @@ def get_product(product_id: int):
             "price": product["price"],
         }
 
+
+@app.post("/products", status_code=201)
+def create_product(product: dict):
+    with sqlite3.connect(DATABASE) as connection:
+        cursor = connection.cursor()
+
+        cursor.execute(
+            "INSERT INTO products (name, price) VALUES (?, ?)",
+            (product["name"], product["price"])
+        )
+
+    connection.commit()
+
+    product_id = cursor.lastrowid
+
+    return {
+        "id": product_id,
+        "name": product["name"],
+        "price": product["price"]
+    }

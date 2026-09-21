@@ -26,8 +26,8 @@ def test_get_product():
 
     assert product is not None
     assert data["id"] == product["id"]
-    assert product["name"] == product["name"]
-    assert product["price"] == product["price"]
+    assert data["name"] == product["name"]
+    assert data["price"] == product["price"]
 
 
 def test_get_product_not_found():
@@ -37,3 +37,39 @@ def test_get_product_not_found():
     assert response.status_code == 404
 
 
+def test_create_product():
+    url = "http://localhost:8000/products"
+    response = requests.post(
+        url,
+    json={
+        "name": "API Monitor",
+        "price": 799.99
+        }
+    )
+
+    assert response.status_code == 200
+
+    data = response.json()
+
+    with sqlite3.connect(DATABASE) as connection:
+        connection.row_factory = sqlite3.Row
+        cursor = connection.cursor()
+
+        cursor.execute(
+            "SELECT * FROM products WHERE id = ?",
+            (data["id"],)
+        )
+
+        product = cursor.fetchone()
+
+        assert product is not None
+        assert data["id"] == product["id"]
+        assert data["name"] == product["name"]
+        assert data["price"] == product["price"]
+
+        cursor.execute(
+            "DELETE FROM products WHERE id = ?",
+            (data["id"],)
+        )
+
+        connection.commit()
