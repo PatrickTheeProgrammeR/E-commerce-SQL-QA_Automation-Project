@@ -102,3 +102,31 @@ def delete_user(user_id : int):
         deleted = cursor.rowcount
 
     return {"deleted": deleted}
+
+
+
+@app.get("/products/{product_id}", status_code=200)
+def get_product(product_id: int):
+    with sqlite3.connect(DATABASE) as connection:
+        connection.row_factory = sqlite3.Row
+        cursor = connection.cursor()
+
+        cursor.execute(
+            "SELECT * FROM products WHERE id = ?",
+            (product_id,)
+        )
+
+        product = cursor.fetchone()
+
+        if product is None:
+            raise HTTPException(
+                status_code=404,
+                detail="Product not found"
+            )
+
+        return {
+            "id": product["id"],
+            "name": product["name"],
+            "price": product["price"],
+        }
+
