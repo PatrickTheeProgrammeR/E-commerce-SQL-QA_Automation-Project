@@ -151,25 +151,41 @@ Pytest
 
 ## Jira
 
-Jira jest wykorzystywana do organizacji pracy nad projektem.
+Jira została wykorzystana do organizacji pracy nad projektem oraz śledzenia wykonanych
+zadań, błędów i dokumentacji.
 
-Przykładowe zadania:
+### Zgłoszenia projektowe
 
-* utworzenie struktury bazy danych
-* przygotowanie danych testowych
-* przygotowanie zapytań SQL
-* implementacja modeli SQLAlchemy
-* przygotowanie testów API
-* walidacja danych w bazie
-* zgłaszanie i dokumentowanie błędów
+* `KAN-4` — Story: Rozwój projektu E-commerce SQL & QA Automation
+* `KAN-5` — Task: Przygotowanie bazy danych SQLite i danych testowych
+* `KAN-7` — Task: Przygotowanie zapytań SQL i raportów
+* `KAN-8` — Task: Implementacja modeli SQLAlchemy dla zamówień
+* `KAN-9` — Task: Dodanie endpointów i testów produktów
+* `KAN-10` — Task: Dokumentacja uruchomienia projektu
+* `KAN-11` — Bug: Niepoprawny oczekiwany status HTTP w teście tworzenia produktu
+* `KAN-12` — Task: Uzupełnienie dokumentacji Jira i Git w README
 
-Przykładowy workflow:
+### Workflow
+
+W projekcie wykorzystano prosty workflow:
 
 ```text
-To Do → In Progress → Code Review → Testing → Done
-```
+To Do → In Progress → Done
 
-Zadania w Jira są powiązane z implementacją i zmianami w repozytorium Git.
+Zadania wykonane w projekcie zostały przeniesione do statusu Done.
+Zgłoszenie błędu KAN-11 pozostaje w statusie To Do do późniejszego poprawienia.
+
+### Powiązanie Jira z Git
+
+Zmiany w repozytorium są opisywane w commitach zawierających klucz zadania Jira.
+
+Przykłady:
+
+KAN-5 Add SQLite database and seed data
+KAN-7 Add SQL analysis and report queries
+KAN-8 Add Order and OrderItem SQLAlchemy models
+KAN-9 Add product API endpoints and tests
+KAN-12 Update Jira and Git documentation
 
 ## Git
 

@@ -54,7 +54,7 @@ def create_user(user: dict):
 
 
 @app.put("/users/{user_id}", status_code=200)
-def update_user(user_id : int, user : dict):
+def update_user(user_id : int, user: dict):
     with sqlite3.connect(DATABASE) as connection:
         connection.row_factory = sqlite3.Row
         cursor = connection.cursor()
@@ -141,7 +141,7 @@ def create_product(product: dict):
             (product["name"], product["price"])
         )
 
-    connection.commit()
+        connection.commit()
 
     product_id = cursor.lastrowid
 
