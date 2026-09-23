@@ -109,7 +109,7 @@ def test_delete_user():
 
 def test_get_user_not_found():
     with sqlite3.connect(DATABASE) as connection:
-        url = "http://localhost:8000/users/10"
+        url = "http://localhost:8000/users/150"
         response = requests.get(url)
 
         assert response.status_code == 404
@@ -117,7 +117,7 @@ def test_get_user_not_found():
         cursor = connection.cursor()
         cursor.execute(
             """SELECT * FROM users WHERE id = ?""",
-            (10,)
+            (150,)
         )
 
         user = cursor.fetchone()

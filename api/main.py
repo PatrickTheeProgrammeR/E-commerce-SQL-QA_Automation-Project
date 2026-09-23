@@ -159,7 +159,7 @@ def get_order(order_id: int):
         cursor = connection.cursor()
 
         cursor.execute(
-            "SELECT * FROM products WHERE id = ?",
+            "SELECT * FROM orders WHERE id = ?",
             (order_id,)
         )
 
