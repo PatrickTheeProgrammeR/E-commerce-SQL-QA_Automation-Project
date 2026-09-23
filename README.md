@@ -20,13 +20,14 @@ Projekt pokazuje pracę z relacyjną bazą danych, zapytaniami SQL, integracją 
 * Git
 * Jira
 
-  ## Instalacja i uruchomienie
+## Instalacja i uruchomienie
 
 * Sklonuj repozytorium i przejdź do katalogu projektu:
 
    ```powershell
    git clone <adres-repozytorium>
    cd E-commerce_SQL_&_QA_Automation-Project
+  ```
 
 * Utwórz i aktywuj środowisko wirtualne:
 
@@ -118,7 +119,19 @@ Projekt wykorzystuje dwa sposoby komunikacji z SQLite:
 
 Projekt zawiera własne REST API zbudowane w FastAPI, które komunikuje się bezpośrednio z bazą SQLite.
 
-Aktualnie rozwijane są endpointy dla danych użytkowników oraz testy ich działania.
+API udostępnia endpointy dla użytkowników, produktów, zamówień oraz pozycji zamówień.
+
+Dostępne endpointy:
+
+* `GET /users/{user_id}`
+* `POST /users`
+* `PUT /users/{user_id}`
+* `DELETE /users/{user_id}`
+* `GET /products/{product_id}`
+* `POST /products`
+* `GET /orders/{order_id}`
+* `POST /orders`
+* `POST /orders/{order_id}/items`
 
 ## QA Automation
 
@@ -162,18 +175,19 @@ zadań, błędów i dokumentacji.
 * `KAN-8` — Task: Implementacja modeli SQLAlchemy dla zamówień
 * `KAN-9` — Task: Dodanie endpointów i testów produktów
 * `KAN-10` — Task: Dokumentacja uruchomienia projektu
-* `KAN-11` — Bug: Niepoprawny oczekiwany status HTTP w teście tworzenia produktu
+* `KAN-11` — Bug: Niepoprawny oczekiwany status HTTP w teście tworzenia produktu - Done
 * `KAN-12` — Task: Uzupełnienie dokumentacji Jira i Git w README
+* `KAN-13` — Task: Dodanie endpointów API i testów dla zamówień
 
 ### Workflow
 
-W projekcie wykorzystano prosty workflow:
-
 ```text
 To Do → In Progress → Done
+```
 
 Zadania wykonane w projekcie zostały przeniesione do statusu Done.
-Zgłoszenie błędu KAN-11 pozostaje w statusie To Do do późniejszego poprawienia.
+KAN-13 zostało powiązane ze Story KAN-4.
+KAN-11 zostało poprawione i przeniesione do statusu Done.
 
 ### Powiązanie Jira z Git
 
@@ -186,6 +200,7 @@ KAN-7 Add SQL analysis and report queries
 KAN-8 Add Order and OrderItem SQLAlchemy models
 KAN-9 Add product API endpoints and tests
 KAN-12 Update Jira and Git documentation
+KAN-13 Add order API endpoints and validation tests
 
 ## Git
 
@@ -199,7 +214,7 @@ Git jest wykorzystywany do:
 Przykładowy commit:
 
 ```text
-TASK-5 Add database validation for user creation
+KAN-13 Add order API endpoints and validation tests
 ```
 
 ## Struktura projektu
@@ -210,25 +225,33 @@ E-commerce-SQL-QA_Automation-Project/
 ├── api/
 │   └── main.py
 │
+├── data/
+│   └── seed.py
+│
 ├── database/
+│   ├── __init__.py
 │   ├── models.py
 │   └── queries.py
-│
-├── tests/
-│   ├── test_users.py
-│   └── test_orders.py
 │
 ├── sql/
 │   ├── analysis.sql
 │   └── reports.sql
 │
-├── data/
-│   └── seed.py
+├── tests/
+│   ├── conftest.py
+│   ├── test_api_invalid_data.py
+│   ├── test_api_orders.py
+│   ├── test_api_products.py
+│   ├── test_orders.py
+│   ├── test_products.py
+│   └── test_users.py
 │
+├──.gitignore
+├── pytest.ini
 ├── README.md
 └── requirements.txt
 ```
 
 ## Status
 
-🚧 Projekt w trakcie tworzenia
+✅ Projekt ukończony

@@ -5,6 +5,26 @@ from pathlib import Path
 
 DATABASE = Path(__file__).resolve().parent.parent / "data" / "ecommerce.db"
 
+
+def validate_user_data(user: dict):
+    if "name" not in user or "email" not in user:
+        raise HTTPException(
+            status_code=400,
+            detail="Name and email are required"
+        )
+
+    if not isinstance(user["name"], str) or not user["name"].strip():
+        raise HTTPException(
+            status_code=400,
+            detail="Name must be a non-empty string"
+        )
+
+    if not isinstance(user["email"], str) or "@" not in user["email"]:
+        raise HTTPException(
+            status_code=400,
+            detail="Email is invalid"
+        )
+
 @app.get("/users/{user_id}", status_code=200)
 def get_user(user_id : int):
     with sqlite3.connect(DATABASE) as connection:
@@ -33,6 +53,8 @@ def get_user(user_id : int):
 
 @app.post("/users", status_code=201)
 def create_user(user: dict):
+    validate_user_data(user)
+
     with sqlite3.connect(DATABASE) as connection:
         connection.row_factory = sqlite3.Row
         cursor = connection.cursor()
@@ -55,6 +77,8 @@ def create_user(user: dict):
 
 @app.put("/users/{user_id}", status_code=200)
 def update_user(user_id : int, user: dict):
+    validate_user_data(user)
+
     with sqlite3.connect(DATABASE) as connection:
         connection.row_factory = sqlite3.Row
         cursor = connection.cursor()
