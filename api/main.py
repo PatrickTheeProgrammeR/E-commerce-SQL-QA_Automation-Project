@@ -150,3 +150,79 @@ def create_product(product: dict):
         "name": product["name"],
         "price": product["price"]
     }
+
+
+@app.get("/orders/{order_id}", status_code=200)
+def get_order(order_id: int):
+    with sqlite3.connect(DATABASE) as connection:
+        connection.row_factory = sqlite3.Row
+        cursor = connection.cursor()
+
+        cursor.execute(
+            "SELECT * FROM products WHERE id = ?",
+            (order_id,)
+        )
+
+        order = cursor.fetchone()
+
+        if order is None:
+            raise HTTPException(
+                status_code=404,
+                detail="Order not found"
+            )
+
+        return {
+            "id": order["id"],
+            "user_id": order["user_id"],
+            "total_amount": order["total_amount"]
+        }
+
+
+@app.post("/orders", status_code=201)
+def create_order(order: dict):
+    with sqlite3.connect(DATABASE) as connection:
+        cursor = connection.cursor()
+
+        cursor.execute(
+            "INSERT INTO orders (user_id, total_amount) VALUES (?, ?)",
+            (order["user_id"], order["total_amount"])
+        )
+
+        connection.commit()
+
+        order_id = cursor.lastrowid
+
+    return {
+        "id": order_id,
+        "user_id": order["user_id"],
+        "total_amount": order["total_amount"]
+    }
+
+
+@app.post("/orders/{order_id}/items", status_code=201)
+def create_order_item(order_id: int, order_item: dict):
+    with sqlite3.connect(DATABASE) as connection:
+        cursor = connection.cursor()
+
+        cursor.execute(
+            """
+            INSERT INTO order_items (order_id, product_id, quantity)
+            VALUES (?, ?, ?)
+            """,
+            (
+                order_id,
+                order_item["product_id"],
+                order_item["quantity"]
+            )
+        )
+
+        connection.commit()
+
+        order_item_id = cursor.lastrowid
+
+    return {
+        "id": order_item_id,
+        "order_id": order_id,
+        "product_id": order_item["product_id"],
+        "quantity": order_item["quantity"]
+    }
